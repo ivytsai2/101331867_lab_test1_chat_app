@@ -15,6 +15,7 @@ app.use(express.urlencoded());
 
 //import models
 const UserModel = require('./models/Users')
+const StatusModel = require('./models/Status')
 const GroupMsgModel = require('./models/GroupMsgs')
 
 //database connection
@@ -27,8 +28,16 @@ mongoose.connect(DB_CONNECTION_STRING, {
 
 //login
 app.route('/')
-    .get((req, res) => {
-        res.clearCookie('username')
+    .get(async (req, res) => {
+        const user = req.cookies.username
+        if (user) {
+            const status = await StatusModel.create({
+                user: user,
+                status: "logout"
+            });
+            status.save();
+            res.clearCookie('username')
+        }
         res.sendFile(__dirname + '/views/index.html');
     }).post(async (req, res) => { 
         // validate user input
@@ -42,7 +51,12 @@ app.route('/')
             const {username, password} = req.body;
             const user = await UserModel.findOne({username: username});
             if (user && (password === user.password)) {
-                res.cookie('username', user.username)
+                const status = await StatusModel.create({
+                    user: username,
+                    status: "login"
+                });
+                status.save();
+                res.cookie('username', user.username);
                 res.writeHead(301, {Location: `http://localhost:3000/chat`});
                 res.end();
             } else {
