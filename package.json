@@ -1,0 +1,22 @@
+{
+  "name": "101331867_lab_test1_chat_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Ivy Tsai",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.2.3",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "jquery": "^3.6.3",
+    "mongoose": "^6.9.0",
+    "pug": "^3.0.2",
+    "socket.io": "^4.5.4"
+  }
+}
